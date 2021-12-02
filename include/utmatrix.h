@@ -105,7 +105,7 @@ bool TVector<ValType>::operator==(const TVector &v) const
 	{
 		return false;
 	}
-	for (size_t i = StartIndex; i < Size; i++)
+	for (size_t i = 0; i < Size; i++)
 	{
 		if (pVector[i] != v.pVector[i])
 		{
@@ -122,7 +122,7 @@ bool TVector<ValType>::operator!=(const TVector &v) const
 	{
 		return true;
 	}
-	for (size_t i = StartIndex; i < Size; i++)
+	for (size_t i = 0; i < Size; i++)
 	{
 		if (pVector[i] != v.pVector[i])
 		{
@@ -190,7 +190,7 @@ TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v)
 		throw "Not equal sizes of vectors";
 	}
 	TVector C(Size, StartIndex);
-	for (size_t i = StartIndex; i < Size; i++)
+	for (size_t i = 0; i < Size; i++)
 	{
 		C[i] = pVector[i] + v.pVector[i];
 	}
@@ -205,7 +205,7 @@ TVector<ValType> TVector<ValType>::operator-(const TVector<ValType> &v)
 		throw "Not equal sizes of vectors";
 	}
 	TVector C(Size, StartIndex);
-	for (size_t i = StartIndex; i < Size; i++)
+	for (size_t i = 0; i < Size; i++)
 	{
 		C[i] = pVector[i] - v.pVector[i];
 	}
@@ -219,8 +219,8 @@ ValType TVector<ValType>::operator*(const TVector<ValType> &v)
 	{
 		throw "Not equal sizes of vectors";
 	}
-	ValType C = pVector[StartIndex] * v.pVector[StartIndex];
-	for (size_t i = StartIndex + 1; i < Size; i++)
+	ValType C = pVector[0] * v.pVector[0];
+	for (size_t i = 1; i < Size; i++)
 	{
 		C += pVector[i] * v.pVector[i];
 	}
