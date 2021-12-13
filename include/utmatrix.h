@@ -101,7 +101,7 @@ ValType& TVector<ValType>::operator[](int pos)
 template <class ValType> // сравнение
 bool TVector<ValType>::operator==(const TVector &v) const
 {
-	if (Size != v.Size)
+	if ((Size != v.Size) || (StartIndex != v.StartIndex))
 	{
 		return false;
 	}
@@ -118,7 +118,7 @@ bool TVector<ValType>::operator==(const TVector &v) const
 template <class ValType> // сравнение
 bool TVector<ValType>::operator!=(const TVector &v) const
 {
-	if (Size != v.Size)
+	if ((Size != v.Size) || (StartIndex != v.StartIndex))
 	{
 		return true;
 	}
@@ -135,10 +135,11 @@ bool TVector<ValType>::operator!=(const TVector &v) const
 template <class ValType> // присваивание
 TVector<ValType>& TVector<ValType>::operator=(const TVector &v)
 {
-	if (Size != v.Size)
+	if ((Size != v.Size) || (StartIndex != v.StartIndex))
 	{
 		delete[](pVector);
 		Size = v.Size;
+		StartIndex = v.StartIndex;
 		pVector = new ValType[Size];
 	}
 	StartIndex = v.StartIndex;
@@ -185,7 +186,7 @@ TVector<ValType> TVector<ValType>::operator*(const ValType &val)
 template <class ValType> // сложение
 TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v)
 {
-	if (Size != v.Size)
+	if ((Size != v.Size) || (StartIndex != v.StartIndex))
 	{
 		throw "Not equal sizes of vectors";
 	}
@@ -200,7 +201,7 @@ TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v)
 template <class ValType> // вычитание
 TVector<ValType> TVector<ValType>::operator-(const TVector<ValType> &v)
 {
-	if (Size != v.Size)
+	if ((Size != v.Size) || (StartIndex != v.StartIndex))
 	{
 		throw "Not equal sizes of vectors";
 	}
@@ -215,7 +216,7 @@ TVector<ValType> TVector<ValType>::operator-(const TVector<ValType> &v)
 template <class ValType> // скалярное произведение
 ValType TVector<ValType>::operator*(const TVector<ValType> &v)
 {
-	if (Size != v.Size)
+	if ((Size != v.Size) || (StartIndex != v.StartIndex))
 	{
 		throw "Not equal sizes of vectors";
 	}
