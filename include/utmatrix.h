@@ -9,6 +9,7 @@
 #define __TMATRIX_H__
 
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -186,14 +187,26 @@ TVector<ValType> TVector<ValType>::operator*(const ValType &val)
 template <class ValType> // сложение
 TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v)
 {
-	if ((Size != v.Size) || (StartIndex != v.StartIndex))
+	if (Size + StartIndex != v.Size + v.StartIndex)
 	{
 		throw "Not equal sizes of vectors";
 	}
-	TVector C(Size, StartIndex);
-	for (size_t i = 0; i < Size; i++)
+	size_t mn = min(StartIndex, v.StartIndex);
+	TVector<ValType> C(max(Size, v.Size), mn);
+	for (size_t i = mn; i < Size + StartIndex; i++)
 	{
-		C[i] = pVector[i] + v.pVector[i];
+		if ((i >= StartIndex) && (i >= v.StartIndex))
+		{
+			C[i] = pVector[i - StartIndex] + v.pVector[i - v.StartIndex];
+		}
+		else if (i >= v.StartIndex)
+		{
+			C[i] = v.pVector[i - v.StartIndex];
+		}
+		else
+		{
+			C[i] = pVector[i - StartIndex];
+		}
 	}
 	return C;
 } /*-------------------------------------------------------------------------*/
@@ -201,14 +214,26 @@ TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v)
 template <class ValType> // вычитание
 TVector<ValType> TVector<ValType>::operator-(const TVector<ValType> &v)
 {
-	if ((Size != v.Size) || (StartIndex != v.StartIndex))
+	if (Size + StartIndex != v.Size + v.StartIndex)
 	{
 		throw "Not equal sizes of vectors";
 	}
-	TVector C(Size, StartIndex);
-	for (size_t i = 0; i < Size; i++)
+	size_t mn = min(StartIndex, v.StartIndex);
+	TVector<ValType> C(max(Size, v.Size), mn);
+	for (size_t i = mn; i < Size + StartIndex; i++)
 	{
-		C[i] = pVector[i] - v.pVector[i];
+		if ((i >= StartIndex) && (i >= v.StartIndex))
+		{
+			C[i] = pVector[i - StartIndex] - v.pVector[i - v.StartIndex];
+		}
+		else if (i >= v.StartIndex)
+		{
+			C[i] = v.pVector[i - StartIndex] - v.pVector[i - v.StartIndex] - v.pVector[i - v.StartIndex];
+		}
+		else
+		{
+			C[i] = pVector[i - StartIndex];
+		}
 	}
 	return C;
 } /*-------------------------------------------------------------------------*/
@@ -216,14 +241,15 @@ TVector<ValType> TVector<ValType>::operator-(const TVector<ValType> &v)
 template <class ValType> // скалярное произведение
 ValType TVector<ValType>::operator*(const TVector<ValType> &v)
 {
-	if ((Size != v.Size) || (StartIndex != v.StartIndex))
+	if (Size + StartIndex != v.Size + v.StartIndex)
 	{
 		throw "Not equal sizes of vectors";
 	}
-	ValType C = pVector[0] * v.pVector[0];
-	for (size_t i = 1; i < Size; i++)
+	size_t mx = max(StartIndex, v.StartIndex);
+	ValType C = pVector[mx - StartIndex] * v.pVector[mx - v.StartIndex];
+	for (size_t i = mx; i < Size + StartIndex; i++)
 	{
-		C += pVector[i] * v.pVector[i];
+		C += pVector[i - mx] * v.pVector[i - mx];
 	}
 	return C;
 } /*-------------------------------------------------------------------------*/
