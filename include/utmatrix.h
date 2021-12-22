@@ -247,9 +247,9 @@ ValType TVector<ValType>::operator*(const TVector<ValType> &v)
 	}
 	size_t mx = max(StartIndex, v.StartIndex);
 	ValType C = pVector[mx - StartIndex] * v.pVector[mx - v.StartIndex];
-	for (size_t i = mx; i < Size + StartIndex; i++)
+	for (size_t i = mx + 1; i < Size + StartIndex; i++)
 	{
-		C += pVector[i - mx] * v.pVector[i - mx];
+		C += pVector[i - StartIndex] * v.pVector[i - v.StartIndex];
 	}
 	return C;
 } /*-------------------------------------------------------------------------*/
